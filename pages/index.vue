@@ -126,7 +126,7 @@
               <div class="mt-4 sm:mt-0 sm:ml-3">
                 <p
                   v-if="uploading"
-                  class="text-center text-sm font-semibold text-gray-900"
+                  class="text-center text-sm font-semibold text-white px-5 py-3"
                 >
                   Uploading...
                 </p>
@@ -162,6 +162,37 @@
         </div>
       </div>
     </div>
+    <div class="m-8 text-center" v-if="cloudinaryVideo">
+      <audio controls autoplay class="mx-auto">
+        <source :src="audioUrl" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+      <a
+        :href="audioUrl"
+        target="_blank"
+        class="
+          m-4
+          inline-flex
+          items-center
+          px-3
+          py-2
+          border border-transparent
+          text-sm
+          leading-4
+          font-medium
+          rounded-md
+          text-indigo-700
+          bg-indigo-100
+          hover:bg-indigo-200
+          focus:outline-none
+          focus:ring-2
+          focus:ring-offset-2
+          focus:ring-indigo-500
+        "
+      >
+        Download
+      </a>
+    </div>
   </div>
 </template>
 
@@ -173,6 +204,15 @@ export default {
       video: null,
       cloudinaryVideo: null,
     };
+  },
+  computed: {
+    audioUrl() {
+      return this.cloudinaryVideo
+        ? this.$cloudinary.video.url(this.cloudinaryVideo.public_id, {
+            format: "mp3",
+          })
+        : "";
+    },
   },
   methods: {
     async handleFile(e) {
